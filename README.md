@@ -1,4 +1,4 @@
-# mozc3 ports for FreeBSD
+# mozc3 ports for FreeBSD ports tree
 
 The latest version of mozc is available for use on FreeBSD.
 Fcitx5 is also supported, so you can get the source code from https://github.com/fcitx/mozc.
