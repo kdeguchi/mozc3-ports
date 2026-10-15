@@ -28,7 +28,7 @@
  
    (defun mozc-leim-register-input-method ()
      "Register function `mozc-mode' as an input method of LEIM.
-@@ -1990,10 +1990,10 @@ Do nothing if LEIM is not available."
+@@ -1990,7 +1990,7 @@ Do nothing if LEIM is not available."
    ;; Register mozc-mode as an input method after the init file has been read
    ;; so the user has a chance to specify `mozc-leim-title' in the init file
    ;; after loading this file.
@@ -36,8 +36,4 @@
 +  ;;(add-hook 'emacs-startup-hook #'mozc-leim-register-input-method)
    ;; In the case that `emacs-startup-hook' has already been run, especially
    ;; when the user loads this file interactively, register immediately.
--  (mozc-leim-register-input-method)
-+  ;;(mozc-leim-register-input-method)
-   )
- 
- 
+   (mozc-leim-register-input-method)
