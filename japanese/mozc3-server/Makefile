@@ -35,7 +35,7 @@ BUILD_DEPENDS=	bash:shells/bash \
 RUN_DEPENDS=	xdg-open:devel/xdg-utils
 
 USES=	compiler:c++20-lang gmake java:build localbase pkgconfig \
-	python:3.10+,build shebangfix tar:bzip2
+	python:patch,build shebangfix tar:bzip2
 
 USE_GITHUB=	yes
 GH_TUPLE=	fcitx:mozc:13ef96d
@@ -89,15 +89,14 @@ GH_TUPLE+=	hiroyuki-komatsu:japanpost_zipcode:77f10d9:zipcode/src/japanpost_zipc
 # usage dictionary
 GH_TUPLE+=	hiroyuki-komatsu:japanese-usage-dictionary:38d3462:udic/src/japanese_usage_dictionary
 
-OPTIONS_DEFINE=	ADDTILDE UTDIC
-OPTIONS_MULTI=	UTDIC
-OPTIONS_MULTI_UTDIC=	ALTCANNADIC EDICT2 JAWIKI NEOLOGD PERSONALNAME \
+OPTIONS_DEFINE=	ADDTILDE
+OPTIONS_GROUP=	UTDIC
+OPTIONS_GROUP_UTDIC=	ALTCANNADIC EDICT2 JAWIKI NEOLOGD PERSONALNAME \
 		PLACENAME SKKJISYO SUDACHIDICT
+OPTIONS_DEFAULT=	JAWIKI PERSONALNAME PLACENAME SUDACHIDICT
 
 ADDTILDE_DESC=	Add FULLWIDTH TILDE
 ADDTILDE_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-src_data_symbol_symbol.tsv
-
-UTDIC_PATCH_DEPENDS=	${PYTHON_CMD}:${PYTHON_PORTSDIR}
 
 ALTCANNADIC_DESC=	Dictionary from Alt-Cannadic
 EDICT2_DESC=		Dictionary from EDICT2
