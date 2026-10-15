@@ -17,7 +17,7 @@ EXTRACT_ONLY=	${_DISTFILES:Mbazelbuild-*} \
 		${_DISTFILES:Mhiroyuki-komatsu-*} \
 		${_DISTFILES:Mutuhiro78-*}
 
-MAINTAINER=	hrs@FreeBSD.org
+MAINTAINER=	kdeguchi@sz.tokoha-u.ac.jp
 COMMENT?=	Mozc Japanese Input Method, Server
 WWW=		https://github.com/google/mozc
 
@@ -118,7 +118,7 @@ JAWIKI_GH_TUPLE=	utuhiro78:mozcdic-ut-jawiki:57af6ad:jawiki
 NEOLOGD_GH_TUPLE=	utuhiro78:mozcdic-ut-neologd:e33ac4c:neologd
 # APACHE20
 PERSONALNAME_GH_TUPLE=	utuhiro78:mozcdic-ut-personal-names:b557dd4:personal
-# APCHE20
+# APACHE20
 PLACENAME_GH_TUPLE=	utuhiro78:mozcdic-ut-place-names:98cf8e9:place
 # APACHE20 GPLv2
 SKKJISYO_GH_TUPLE=	utuhiro78:mozcdic-ut-skk-jisyo:384ad92:skkjisyo
@@ -160,8 +160,6 @@ RUN_DEPENDS+=	mozc:japanese/mozc3-server \
 
 CATEGORIES+=	elisp
 RUN_DEPENDS+=	mozc:japanese/mozc3-server
-
-NO_ARCH=	yes
 
 USES+=		emacs:build
 
