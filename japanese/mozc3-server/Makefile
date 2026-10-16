@@ -170,16 +170,6 @@ RUN_DEPENDS+=	mozc:japanese/mozc3-server
 
 USES+=		emacs:build
 
-.elif ${BUILD_MOZC_LIST:Mfcitx_mozc}
-
-CONFLICTS_INSTALL=	ja-fcitx-mozc-*
-
-LIB_DEPENDS+=	libfcitx-core.so:chinese/fcitx
-RUN_DEPENDS+=	mozc:japanese/mozc3-server \
-		mozc_tool:japanese/mozc3-tool
-
-USES+=		gettext-tools
-
 .elif ${BUILD_MOZC_LIST:Mfcitx5_mozc}
 
 LIB_DEPENDS+=	libFcitx5Core.so:textproc/fcitx5
@@ -225,14 +215,6 @@ post-patch:
 		${BAZEL_WRKSRC}/rules_go.patch
 	#@${REINPLACE_CMD} -e 's@%%BAZEL_WRKSRC%%@${BAZEL_WRKSRC}@' ${BAZEL_WRKSRC}/rules_go.patch
 	#@${CP} ${DISTDIR}/${DIST_SUBDIR}/versions.json ${BAZEL_WRKSRC}
-
-.if ${BUILD_MOZC_LIST:Mfcitx_mozc} == "fcitx_mozc"
-	${REINPLACE_CMD} 's,/po/mo},%po}mo,g' \
-		${BAZEL_WRKSRC}/unix/fcitx/gen_fcitx_mozc_i18n.sh
-	${REINPLACE_CMD} \
-		's,IconName=.*,IconName=${LOCALBASE:Q}/share/fcitx/mozc/icon/mozc.png,' \
-		${BAZEL_WRKSRC}/unix/fcitx/mozc.conf
-.endif
 
 .if ${BUILD_MOZC_LIST:Mfcitx5_mozc} == "fcitx5_mozc"
 	@${CP} ${BAZEL_WRKSRC}/unix/fcitx/gen_fcitx_mozc_i18n.sh ${BAZEL_WRKSRC}/unix/fcitx5/
@@ -459,70 +441,6 @@ do-install-uim_mozc:
 		${BAZEL_WRKSRC}/data/images/unix/ui-tool.png \
 		${STAGEDIR}${DATADIR}/pixmaps/mozc_tool_selector.png
 .endif
-
-.if ${BUILD_MOZC_LIST:Mfcitx_mozc} == "fcitx_mozc" || make(makesum)
-
-PLIST_FILES+=	lib/fcitx/fcitx-mozc.so \
-		share/fcitx/addon/fcitx-mozc.conf \
-		share/fcitx/inputmethod/mozc.conf \
-		%%DATADIR%%/icon/mozc.png \
-		%%DATADIR%%/icon/mozc-alpha_full.png \
-		%%DATADIR%%/icon/mozc-alpha_half.png \
-		%%DATADIR%%/icon/mozc-direct.png \
-		%%DATADIR%%/icon/mozc-hiragana.png \
-		%%DATADIR%%/icon/mozc-katakana_full.png \
-		%%DATADIR%%/icon/mozc-katakana_half.png \
-		%%DATADIR%%/icon/mozc-dictionary.png \
-		%%DATADIR%%/icon/mozc-properties.png \
-		%%DATADIR%%/icon/mozc-tool.png \
-		share/locale/ca/LC_MESSAGES/fcitx-mozc.mo \
-		share/locale/da/LC_MESSAGES/fcitx-mozc.mo \
-		share/locale/de/LC_MESSAGES/fcitx-mozc.mo \
-		share/locale/ja/LC_MESSAGES/fcitx-mozc.mo \
-		share/locale/ko/LC_MESSAGES/fcitx-mozc.mo \
-		share/locale/ru/LC_MESSAGES/fcitx-mozc.mo \
-		share/locale/zh_CN/LC_MESSAGES/fcitx-mozc.mo \
-		share/locale/zh_TW/LC_MESSAGES/fcitx-mozc.mo
-PLIST_DIRS+=	%%DATADIR%%/icon ${DATADIR_REL}
-
-do-build-fcitx_mozc:
-	cd ${BAZEL_WRKSRC} && \
-		${BUILD_MOZC_CMD} //unix/fcitx:fcitx-mozc.so
-	cd ${BAZEL_WRKSRC}/unix/fcitx && ${SH} gen_fcitx_mozc_i18n.sh ./po
-
-do-install-fcitx_mozc:
-	@${MKDIR} \
-		${STAGEDIR}${PREFIX}/lib/fcitx \
-		${STAGEDIR}${PREFIX}/share/fcitx/addon \
-		${STAGEDIR}${PREFIX}/share/fcitx/inputmethod
-	${INSTALL_LIB} \
-		${BAZEL_WRKSRC}/bazel-out/freebsd-opt/bin/unix/fcitx/fcitx-mozc.so \
-		${STAGEDIR}${PREFIX}/lib/fcitx/fcitx-mozc.so
-	${INSTALL_DATA} \
-		${BAZEL_WRKSRC}/unix/fcitx/fcitx-mozc.conf \
-		${STAGEDIR}${PREFIX}/share/fcitx/addon/fcitx-mozc.conf
-	${INSTALL_DATA} \
-		${BAZEL_WRKSRC}/unix/fcitx/mozc.conf \
-		${STAGEDIR}${PREFIX}/share/fcitx/inputmethod/mozc.conf
-	@${MKDIR} ${STAGEDIR}${DATADIR}/icon
-.for F in ui-alpha_full ui-alpha_half ui-dictionary ui-direct \
-	ui-hiragana ui-katakana_full ui-katakana_half ui-properties ui-tool
-	${INSTALL_DATA} \
-		${BAZEL_WRKSRC}/data/images/unix/${F}.png \
-		${STAGEDIR}${DATADIR}/icon/${F:S,^ui-,mozc-,}.png
-.endfor
-	${INSTALL_DATA} \
-		${BAZEL_WRKSRC}/data/images/product_icon_32bpp-128.png \
-		${STAGEDIR}${DATADIR}/icon/mozc.png
-	cd ${BAZEL_WRKSRC} && \
-		for mofile in unix/fcitx/po/*.mo; do \
-			locale=$${mofile##*/}; \
-			locale=$${locale%.mo}; \
-			${INSTALL_DATA} ${BAZEL_WRKSRC}/$${mofile} \
-				${STAGEDIR}${PREFIX}/share/locale/$${locale}/LC_MESSAGES/fcitx-mozc.mo; \
-		done
-
-.endif #fcitx_mozc
 
 .if ${BUILD_MOZC_LIST:Mfcitx5_mozc} == "fcitx5_mozc" || make(makesum)
 
