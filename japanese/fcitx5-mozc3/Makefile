@@ -5,8 +5,6 @@ COMMENT=	Mozc engine for Fcitx5
 DATADIR=	${PREFIX}/share/fcitx5/${PORTNAME}
 
 MASTERDIR=	${.CURDIR}/../../japanese/mozc3-server
-FILESDIR=	${.CURDIR}/files
-SUB_FILES=	pkg-message
 
 BUILD_MOZC_LIST=	fcitx5_mozc
 
