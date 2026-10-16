@@ -234,6 +234,7 @@ _UTDIC=	1
 . endif
 .endfor
 
+_UTDIC=	0
 .if ${_UTDIC} == 1
 GH_TUPLE+=	utuhiro78:merge-ut-dictionaries:6239884:ut
 MASTER_SITES+=	${UTDIC_MASTER_SITES}
