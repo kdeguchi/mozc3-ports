@@ -80,6 +80,8 @@ BAZEL_WRKSRC=	${WRKSRC}/src
 
 .if ${BUILD_MOZC_LIST:Mmozc_server} == "mozc_server"
 
+CONFLICTS_INSTALL=	ja-mozc-server-*
+
 PKGNAMESUFFIX=	-server
 PKGMESSAGE=	${FILESDIR}/pkg-message
 
@@ -128,6 +130,8 @@ SUDACHIDICT_GH_TUPLE=	utuhiro78:mozcdic-ut-sudachidict:c686771:sudachi
 
 .elif ${BUILD_MOZC_LIST:Mmozc_tool} == "mozc_tool"
 
+CONFLICTS_INSTALL=	ja-mozc-tool-*
+
 BUILD_DEPENDS+=	libglvnd>0:graphics/libglvnd
 RUN_DEPENDS+=	mozc:japanese/mozc3-server
 
@@ -135,6 +139,8 @@ USES+=		qt:6
 USE_QT=		base
 
 .elif ${BUILD_MOZC_LIST:Mibus_mozc} == "ibus_mozc"
+
+CONFLICTS_INSTALL=	ja-ibus-mozc-*
 
 BUILD_DEPENDS+=	libglvnd>0:graphics/libglvnd
 LIB_DEPENDS+=	libibus-1.0.so:textproc/ibus
@@ -147,6 +153,8 @@ USE_QT=		base
 
 .elif ${BUILD_MOZC_LIST:Muim_mozc} == "uim_mozc"
 
+CONFLICTS_INSTALL=	ja-uim-mozc-*
+
 LICENSE_FILE+=	${BAZEL_WRKSRC}/src/unix/uim/LICENSE
 
 LIB_DEPENDS+=	libuim.so:textproc/uim
@@ -155,12 +163,16 @@ RUN_DEPENDS+=	mozc:japanese/mozc3-server \
 
 .elif ${BUILD_MOZC_LIST:Mmozc_el} == "mozc_el"
 
+CONFLICTS_INSTALL=	ja-mozc-el-*
+
 CATEGORIES+=	elisp
 RUN_DEPENDS+=	mozc:japanese/mozc3-server
 
 USES+=		emacs:build
 
 .elif ${BUILD_MOZC_LIST:Mfcitx_mozc}
+
+CONFLICTS_INSTALL=	ja-fcitx-mozc-*
 
 LIB_DEPENDS+=	libfcitx-core.so:chinese/fcitx
 RUN_DEPENDS+=	mozc:japanese/mozc3-server \
