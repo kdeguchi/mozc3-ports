@@ -228,13 +228,13 @@ PLIST_FILES+=	bin/mozc \
 		libexec/mozc_server
 SUB_FILES+=	mozc
 
+_UTDIC=	0
 .for utopt in ${OPTIONS_GROUP_UTDIC}
 . if ${PORT_OPTIONS:M${utopt}}
 _UTDIC=	1
 . endif
 .endfor
 
-_UTDIC=	0
 .if ${_UTDIC} == 1
 GH_TUPLE+=	utuhiro78:merge-ut-dictionaries:6239884:ut
 MASTER_SITES+=	${UTDIC_MASTER_SITES}
