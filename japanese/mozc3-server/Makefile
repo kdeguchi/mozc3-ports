@@ -106,7 +106,7 @@ PERSONALNAME_DESC=	Personal Name Dictionary
 PLACENAME_DESC=		Place Name Dictionary
 SKKJISYO_DESC=		Dictionary from from SKK-JISYO
 SUDACHIDICT_DESC=	Dictionary from SudachiDict
-UTDIC_DESC=		Additional UT Dictionary
+UTDIC_DESC=		Additional UT Dictionaries
 
 # GPLv2
 ALTCANNADIC_GH_TUPLE=	utuhiro78:mozcdic-ut-alt-cannadic:0e23741:altcannadic
@@ -123,8 +123,6 @@ PLACENAME_GH_TUPLE=	utuhiro78:mozcdic-ut-place-names:98cf8e9:place
 SKKJISYO_GH_TUPLE=	utuhiro78:mozcdic-ut-skk-jisyo:384ad92:skkjisyo
 # APACHE20
 SUDACHIDICT_GH_TUPLE=	utuhiro78:mozcdic-ut-sudachidict:c686771:sudachi
-# APACHE20 multi
-UTDIC_GH_TUPLE=		utuhiro78:merge-ut-dictionaries:6239884:ut
 
 .include "Makefile.jawiki_latest_pages_articles_multistream_index"
 
@@ -236,8 +234,20 @@ PLIST_FILES+=	bin/mozc \
 		libexec/mozc_server
 SUB_FILES+=	mozc
 
-.if ${PORT_OPTIONS:MUTDIC} || ${PORT_OPTIONS:MNEOLOGD} || \
-	${PORT_OPTIONS:MPERSONALNAME} || ${PORT_OPTIONS:MPLACENAME}
+.for utopt in ${OPTIONS_GROUP_UTDIC}
+. if ${PORT_OPTIONS:M${utopt}}
+_UTDIC=	1
+. endif
+.endfor
+
+.if ${_UTDIC} == 1
+GH_TUPLE+=	utuhiro78:merge-ut-dictionaries:6239884:ut
+MASTER_SITES+=	${UTDIC_MASTER_SITES}
+DISTFILES+=	${UTDIC_DISTFILES}
+.endif
+
+.if ${PORT_OPTIONS:MNEOLOGD} || ${PORT_OPTIONS:MPERSONALNAME} || \
+	${PORT_OPTIONS:MPLACENAME}
 LICENSE+=	APACHE20
 LICENSE_DISTFILES_APACHE20=	${DISTFILES:M*\:ut:C@\:ut@@} \
 		${DISTFILES:M*\:neologd:C@\:neologd@@} \
@@ -261,7 +271,7 @@ post-extract-mozc_server:
 		${UNZIP_NATIVE_CMD} -q ken_all.zip
 
 post-patch-mozc_server:
-.if ${PORT_OPTIONS:MUTDIC}
+.if ${_UTDIC} == 1
 	@${ECHO_MSG} "===> Creating mozcdic-ut.txt for UT Dictionary. It takes a long time!"
 	@cd ${WRKSRC_ut}/src/merge && \
 		${PATCH} < ${PATCHDIR}/extra-patch-merge_dictionaries.py && \
