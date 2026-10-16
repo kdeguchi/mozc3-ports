@@ -465,8 +465,10 @@ PLIST_FILES+=	lib/fcitx5/fcitx5-mozc.so \
 		share/locale/fr/LC_MESSAGES/fcitx5-mozc.mo \
 		share/locale/he/LC_MESSAGES/fcitx5-mozc.mo \
 		share/locale/ja/LC_MESSAGES/fcitx5-mozc.mo \
+		share/locale/ka/LC_MESSAGES/fcitx5-mozc.mo \
 		share/locale/ko/LC_MESSAGES/fcitx5-mozc.mo \
 		share/locale/ru/LC_MESSAGES/fcitx5-mozc.mo \
+		share/locale/sv/LC_MESSAGES/fcitx5-mozc.mo \
 		share/locale/tr/LC_MESSAGES/fcitx5-mozc.mo \
 		share/locale/vi/LC_MESSAGES/fcitx5-mozc.mo \
 		share/locale/zh_CN/LC_MESSAGES/fcitx5-mozc.mo \
