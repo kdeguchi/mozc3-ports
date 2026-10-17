@@ -1,5 +1,9 @@
 # mozc3 ports for FreeBSD ports tree
 
+These ports have been incorporated into the ports tree.
+
+https://cgit.freebsd.org/ports/commit/?id=19cbb11ea49150c9c2394566efd127beec65ca0b
+
 The latest version of mozc is available for use on FreeBSD.
 Fcitx5 is also supported, so you can get the source code from https://github.com/fcitx/mozc.
 
