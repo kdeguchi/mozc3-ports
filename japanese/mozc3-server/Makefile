@@ -91,14 +91,17 @@ GH_TUPLE+=	hiroyuki-komatsu:japanpost_zipcode:77f10d9:zipcode/src/japanpost_zipc
 # usage dictionary
 GH_TUPLE+=	hiroyuki-komatsu:japanese-usage-dictionary:38d3462:udic/src/japanese_usage_dictionary
 
-OPTIONS_DEFINE=	ADDTILDE
+OPTIONS_DEFINE=	ADDTILDE EMACS_HELPER
 OPTIONS_GROUP=	UTDIC
 OPTIONS_GROUP_UTDIC=	ALTCANNADIC EDICT2 JAWIKI NEOLOGD PERSONALNAME \
 		PLACENAME SKKJISYO SUDACHIDICT
 OPTIONS_DEFAULT=	JAWIKI PERSONALNAME PLACENAME SUDACHIDICT
+OPTIONS_SUB=	yes
 
 ADDTILDE_DESC=	Add FULLWIDTH TILDE
 ADDTILDE_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-src_data_symbol_symbol.tsv
+
+EMACS_HELPER_DESC=	Install mozc_emacs_helper
 
 ALTCANNADIC_DESC=	Dictionary from Alt-Cannadic
 EDICT2_DESC=		Dictionary from EDICT2
@@ -225,7 +228,8 @@ post-patch:
 .if ${BUILD_MOZC_LIST:Mmozc_server} == "mozc_server" || make(makesum)
 
 PLIST_FILES+=	bin/mozc \
-		libexec/mozc_server
+		libexec/mozc_server \
+		%%EMACS_HELPER%%libexec/mozc_emacs_helper
 SUB_FILES+=	mozc
 
 _UTDIC=	0
@@ -286,6 +290,10 @@ post-patch: post-patch-mozc_server
 do-build-mozc_server:
 	cd ${BAZEL_WRKSRC} && \
 		${BUILD_MOZC_CMD} //server:mozc_server
+.if ${PORT_OPTIONS:MEMACS_HELPER}
+	cd ${BAZEL_WRKSRC} && \
+		${BUILD_MOZC_CMD} //unix/emacs:mozc_emacs_helper
+.endif
 
 do-install-mozc_server:
 	${INSTALL_PROGRAM} \
@@ -293,6 +301,12 @@ do-install-mozc_server:
 		${STAGEDIR}${PREFIX}/libexec
 	${INSTALL_SCRIPT} \
 		${WRKDIR}/mozc ${STAGEDIR}/${PREFIX}/bin
+.if ${PORT_OPTIONS:MEMACS_HELPER}
+	${INSTALL_PROGRAM} \
+		${BAZEL_WRKSRC}/bazel-out/freebsd-opt/bin/unix/emacs/mozc_emacs_helper \
+		${STAGEDIR}${PREFIX}/libexec
+.endif
+
 .endif
 
 .if ${BUILD_MOZC_LIST:Mmozc_tool} == "mozc_tool" || make(makesum)
@@ -529,8 +543,7 @@ do-install-fcitx5_mozc:
 EXTRA_PATCHES=	${PATCHDIR}/extra-patch-src_unix_emacs_mozc.el
 
 PLIST_FILES+=	${EMACS_SITE_LISPDIR}/mozc/mozc.el.gz \
-		${EMACS_SITE_LISPDIR}/mozc/leim-list.el \
-		libexec/mozc_emacs_helper
+		${EMACS_SITE_LISPDIR}/mozc/leim-list.el
 PLIST_DIRS+=	${EMACS_SITE_LISPDIR}/mozc
 
 post-patch-mozc_el:
@@ -540,15 +553,10 @@ post-patch-mozc_el:
 post-patch: post-patch-mozc_el
 
 do-build-mozc_el:
-	cd ${BAZEL_WRKSRC} && \
-		${BUILD_MOZC_CMD} //unix/emacs:mozc_emacs_helper
 	cd ${BAZEL_WRKSRC}/unix/emacs && ${GZIP_CMD} mozc.el
 
 do-install-mozc_el:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/${EMACS_SITE_LISPDIR}/mozc
-	${INSTALL_PROGRAM} \
-		${BAZEL_WRKSRC}/bazel-out/freebsd-opt/bin/unix/emacs/mozc_emacs_helper \
-		${STAGEDIR}${PREFIX}/libexec
 	${INSTALL_DATA} \
 		${BAZEL_WRKSRC}/unix/emacs/mozc.el.gz \
 		${FILESDIR}/leim-list.el \
