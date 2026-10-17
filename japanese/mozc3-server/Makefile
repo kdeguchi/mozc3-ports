@@ -80,6 +80,8 @@ BAZEL_WRKSRC=	${WRKSRC}/src
 
 .if ${BUILD_MOZC_LIST:Mmozc_server} == "mozc_server"
 
+PORTREVISION=	1
+
 CONFLICTS_INSTALL=	ja-mozc-server-*
 
 PKGNAMESUFFIX=	-server
@@ -165,6 +167,8 @@ RUN_DEPENDS+=	mozc:japanese/mozc3-server \
 		mozc_tool:japanese/mozc3-tool
 
 .elif ${BUILD_MOZC_LIST:Mmozc_el} == "mozc_el"
+
+PORTREVISION=	1
 
 CONFLICTS_INSTALL=	ja-mozc-el-*
 
