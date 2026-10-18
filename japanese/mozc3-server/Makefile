@@ -236,6 +236,11 @@ PLIST_FILES+=	bin/mozc \
 		%%EMACS_HELPER%%libexec/mozc_emacs_helper
 SUB_FILES+=	mozc
 
+_TARGET=	//server:mozc_server
+.if ${PORT_OPTIONS:MEMACS_HELPER}
+_TARGET+=	//unix/emacs:mozc_emacs_helper
+.endif
+
 _UTDIC=	0
 .for utopt in ${OPTIONS_GROUP_UTDIC}
 . if ${PORT_OPTIONS:M${utopt}}
@@ -293,11 +298,7 @@ post-patch: post-patch-mozc_server
 
 do-build-mozc_server:
 	cd ${BAZEL_WRKSRC} && \
-		${BUILD_MOZC_CMD} //server:mozc_server
-.if ${PORT_OPTIONS:MEMACS_HELPER}
-	cd ${BAZEL_WRKSRC} && \
-		${BUILD_MOZC_CMD} //unix/emacs:mozc_emacs_helper
-.endif
+		${BUILD_MOZC_CMD} ${_TARGET}
 
 do-install-mozc_server:
 	${INSTALL_PROGRAM} \
