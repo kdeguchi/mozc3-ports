@@ -177,7 +177,8 @@ PORTREVISION=	1
 CONFLICTS_INSTALL=	ja-mozc-el-*
 
 CATEGORIES+=	elisp
-RUN_DEPENDS+=	mozc:japanese/mozc3-server
+RUN_DEPENDS+=	mozc:japanese/mozc3-server \
+	${LOCALBASE}/libexec/mozc_emacs_helper>:japanese/mozc3-emacs-helper
 
 USES+=		emacs:build
 
@@ -536,7 +537,7 @@ do-install-fcitx5_mozc:
 			${STAGEDIR}${PREFIX}/share/metainfo
 .endif #fcitx5_mozc
 
-.if ${BUILD_MOZC_LIST:Mmozc_emacs_helper}
+.if ${BUILD_MOZC_LIST:Mmozc_emacs_helper} || make(makesum)
 
 PLIST_FILES=	libexec/mozc_emacs_helper
 
