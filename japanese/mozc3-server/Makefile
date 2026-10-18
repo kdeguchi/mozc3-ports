@@ -11,11 +11,15 @@ DISTFILES=	v1.10.0.tar.gz:bats_core
 
 DIST_SUBDIR=	${PORTNAME}
 
-EXTRACT_ONLY=	${_DISTFILES:Mbazelbuild-*} \
+BUILD_MOZC_LIST?=	mozc_server
+
+EXTRACT_ONLY=	${_DISTFILES:Mfcitx-*}
+.if ${BUILD_MOZC_LIST:Nmozc_el}
+EXTRACT_ONLY+=	${_DISTFILES:Mbazelbuild-*} \
 		${_DISTFILES:Me-kato-*} \
-		${_DISTFILES:Mfcitx-*} \
 		${_DISTFILES:Mhiroyuki-komatsu-*} \
 		${_DISTFILES:Mutuhiro78-*}
+.endif
 
 MAINTAINER=	kdeguchi@sz.tokoha-u.ac.jp
 COMMENT?=	Mozc Japanese Input Method, Server
@@ -30,8 +34,10 @@ LICENSE_PERMS_NAISTL=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 LICENSE_DISTFILES_BSD3CLAUSE=	${DISTNAME}${EXTRACT_SUFX}
 LICENSE_DISTFILES_NAISTL=	${DISTNAME}${EXTRACT_SUFX}
 
+.if ${BUILD_MOZC_LIST:Nmozc_el}
 BUILD_DEPENDS=	bash:shells/bash \
 		bazel:devel/bazel9
+.endif
 RUN_DEPENDS=	xdg-open:devel/xdg-utils
 
 USES=	compiler:c++20-lang gmake java:build localbase pkgconfig \
@@ -39,14 +45,14 @@ USES=	compiler:c++20-lang gmake java:build localbase pkgconfig \
 
 USE_GITHUB=	yes
 GH_TUPLE=	fcitx:mozc:13ef96d
+.if ${BUILD_MOZC_LIST:Nmozc_el}
 GH_TUPLE+=	bazelbuild:bazel-central-registry:9d03419:bcr
+.endif
 
 JAVA_VERSION=	21
 JAVA_VENDOR=	openjdk
 
 BINARY_ALIAS=	python3=${PYTHON_CMD}
-
-BUILD_MOZC_LIST?=	mozc_server
 
 BUILD_MOZC_CMD=	${SETENV} JAVA_HOME=${JAVA_HOME} \
 	bazel ${BAZEL_BOOT} build \
@@ -181,7 +187,7 @@ CATEGORIES+=	elisp
 RUN_DEPENDS+=	mozc:japanese/mozc3-server \
 	${LOCALBASE}/libexec/mozc_emacs_helper:japanese/mozc3-emacs-helper
 
-USES+=		emacs:build
+USES=		emacs:build
 
 .elif ${BUILD_MOZC_LIST:Mfcitx5_mozc}
 
@@ -203,6 +209,7 @@ _CCTYPE=	gcc
 
 .include <bsd.port.pre.mk>
 
+.if ${BUILD_MOZC_LIST:Nmozc_el}
 post-patch:
 	@${FIND} ${BAZEL_WRKSRC} -type f \
 		\( -name 'BUILD' -o -name '*.bzl' -o -name '*.cc' -o -name '*.h' -o -name MODULE.bazel \) \
@@ -228,6 +235,7 @@ post-patch:
 		${BAZEL_WRKSRC}/rules_go.patch
 	#@${REINPLACE_CMD} -e 's@%%BAZEL_WRKSRC%%@${BAZEL_WRKSRC}@' ${BAZEL_WRKSRC}/rules_go.patch
 	#@${CP} ${DISTDIR}/${DIST_SUBDIR}/versions.json ${BAZEL_WRKSRC}
+.endif
 
 .if ${BUILD_MOZC_LIST:Mfcitx5_mozc} == "fcitx5_mozc"
 	@${CP} ${BAZEL_WRKSRC}/unix/fcitx/gen_fcitx_mozc_i18n.sh ${BAZEL_WRKSRC}/unix/fcitx5/
