@@ -93,7 +93,7 @@ GH_TUPLE+=	hiroyuki-komatsu:japanpost_zipcode:77f10d9:zipcode/src/japanpost_zipc
 # usage dictionary
 GH_TUPLE+=	hiroyuki-komatsu:japanese-usage-dictionary:38d3462:udic/src/japanese_usage_dictionary
 
-OPTIONS_DEFINE=	ADDTILDE EMACS_HELPER
+OPTIONS_DEFINE=	ADDTILDE
 OPTIONS_GROUP=	UTDIC
 OPTIONS_GROUP_UTDIC=	ALTCANNADIC EDICT2 JAWIKI NEOLOGD PERSONALNAME \
 		PLACENAME SKKJISYO SUDACHIDICT
@@ -102,8 +102,6 @@ OPTIONS_SUB=	yes
 
 ADDTILDE_DESC=	Add FULLWIDTH TILDE
 ADDTILDE_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-src_data_symbol_symbol.tsv
-
-EMACS_HELPER_DESC=	Install mozc_emacs_helper
 
 ALTCANNADIC_DESC=	Dictionary from Alt-Cannadic
 EDICT2_DESC=		Dictionary from EDICT2
@@ -165,6 +163,12 @@ LICENSE_FILE+=	${BAZEL_WRKSRC}/src/unix/uim/LICENSE
 LIB_DEPENDS+=	libuim.so:textproc/uim
 RUN_DEPENDS+=	mozc:japanese/mozc3-server \
 		mozc_tool:japanese/mozc3-tool
+
+.elif ${BUILD_MOZC_LIST:Mmozc_emacs_helper}
+
+CONFLICTS_INSTALL=	ja-mozc-server-*
+
+RUN_DEPENDS+=	mozc:japanese/mozc3-server
 
 .elif ${BUILD_MOZC_LIST:Mmozc_el} == "mozc_el"
 
@@ -232,14 +236,8 @@ post-patch:
 .if ${BUILD_MOZC_LIST:Mmozc_server} == "mozc_server" || make(makesum)
 
 PLIST_FILES+=	bin/mozc \
-		libexec/mozc_server \
-		%%EMACS_HELPER%%libexec/mozc_emacs_helper
+		libexec/mozc_server
 SUB_FILES+=	mozc
-
-_TARGET=	//server:mozc_server
-.if ${PORT_OPTIONS:MEMACS_HELPER}
-_TARGET+=	//unix/emacs:mozc_emacs_helper
-.endif
 
 _UTDIC=	0
 .for utopt in ${OPTIONS_GROUP_UTDIC}
@@ -298,7 +296,7 @@ post-patch: post-patch-mozc_server
 
 do-build-mozc_server:
 	cd ${BAZEL_WRKSRC} && \
-		${BUILD_MOZC_CMD} ${_TARGET}
+		${BUILD_MOZC_CMD} //server:mozc_server
 
 do-install-mozc_server:
 	${INSTALL_PROGRAM} \
@@ -306,11 +304,6 @@ do-install-mozc_server:
 		${STAGEDIR}${PREFIX}/libexec
 	${INSTALL_SCRIPT} \
 		${WRKDIR}/mozc ${STAGEDIR}/${PREFIX}/bin
-.if ${PORT_OPTIONS:MEMACS_HELPER}
-	${INSTALL_PROGRAM} \
-		${BAZEL_WRKSRC}/bazel-out/freebsd-opt/bin/unix/emacs/mozc_emacs_helper \
-		${STAGEDIR}${PREFIX}/libexec
-.endif
 
 .endif
 
@@ -542,6 +535,21 @@ do-install-fcitx5_mozc:
 		${BAZEL_WRKSRC}/unix/fcitx5/org.fcitx.Fcitx5.Addon.Mozc.metainfo.xml \
 			${STAGEDIR}${PREFIX}/share/metainfo
 .endif #fcitx5_mozc
+
+.if ${BUILD_MOZC_LIST:Mmozc_emacs_helper}
+
+PLIST_FILES=	libexec/mozc_emacs_helper
+
+do-build-mozc_emacs_helper:
+	cd ${BAZEL_WRKSRC} && \
+		${BUILD_MOZC_CMD} //unix/emacs:mozc_emacs_helper
+
+do-install-mozc_emacs_helper:
+	${INSTALL_PROGRAM} \
+		${BAZEL_WRKSRC}/bazel-out/freebsd-opt/bin/unix/emacs/mozc_emacs_helper \
+		${STAGEDIR}${PREFIX}/libexec
+
+.endif
 
 .if ${BUILD_MOZC_LIST:Mmozc_el} == "mozc_el" || make(makesum)
 
