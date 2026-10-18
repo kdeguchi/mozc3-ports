@@ -177,10 +177,13 @@ PORTREVISION=	1
 CONFLICTS_INSTALL=	ja-mozc-el-*
 
 CATEGORIES+=	elisp
+
+BUILD_DEPENDS=
+
 RUN_DEPENDS+=	mozc:japanese/mozc3-server \
 	${LOCALBASE}/libexec/mozc_emacs_helper:japanese/mozc3-emacs-helper
 
-USES+=		emacs:build
+USES=		emacs:build
 
 .elif ${BUILD_MOZC_LIST:Mfcitx5_mozc}
 
