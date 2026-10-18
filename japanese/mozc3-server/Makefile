@@ -178,7 +178,7 @@ CONFLICTS_INSTALL=	ja-mozc-el-*
 
 CATEGORIES+=	elisp
 RUN_DEPENDS+=	mozc:japanese/mozc3-server \
-	${LOCALBASE}/libexec/mozc_emacs_helper>:japanese/mozc3-emacs-helper
+	${LOCALBASE}/libexec/mozc_emacs_helper:japanese/mozc3-emacs-helper
 
 USES+=		emacs:build
 
