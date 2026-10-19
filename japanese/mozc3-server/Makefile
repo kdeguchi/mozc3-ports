@@ -1,5 +1,5 @@
 PORTNAME=	mozc3
-DISTVERSION=	3.34.6345.102
+DISTVERSION=	3.35.6354.102
 PORTREVISION?=	0
 CATEGORIES=	japanese
 MASTER_SITES=	https://github.com/bats-core/bats-core/archive/:bats_core
@@ -39,7 +39,7 @@ USES=	compiler:c++20-lang gmake java:build localbase pkgconfig \
 
 USE_GITHUB=	yes
 GH_TUPLE=	fcitx:mozc:13ef96d
-GH_TUPLE+=	bazelbuild:bazel-central-registry:9d03419:bcr
+GH_TUPLE+=	bazelbuild:bazel-central-registry:70790c1:bcr
 
 JAVA_VERSION=	21
 JAVA_VENDOR=	openjdk
@@ -79,8 +79,6 @@ BAZEL_COMMON_OPTS=	--distdir=${DISTDIR}/${DIST_SUBDIR} \
 BAZEL_WRKSRC=	${WRKSRC}/src
 
 .if ${BUILD_MOZC_LIST:Mmozc_server} == "mozc_server"
-
-PORTREVISION=	1
 
 CONFLICTS_INSTALL=	ja-mozc-server-*
 
@@ -127,7 +125,7 @@ PLACENAME_GH_TUPLE=	utuhiro78:mozcdic-ut-place-names:98cf8e9:place
 # APACHE20 GPLv2
 SKKJISYO_GH_TUPLE=	utuhiro78:mozcdic-ut-skk-jisyo:384ad92:skkjisyo
 # APACHE20
-SUDACHIDICT_GH_TUPLE=	utuhiro78:mozcdic-ut-sudachidict:c686771:sudachi
+SUDACHIDICT_GH_TUPLE=	utuhiro78:mozcdic-ut-sudachidict:13129dd:sudachi
 
 .include "Makefile.jawiki_latest_pages_articles_multistream_index"
 
@@ -171,8 +169,6 @@ CONFLICTS_INSTALL=	ja-mozc-server-*
 RUN_DEPENDS+=	mozc:japanese/mozc3-server
 
 .elif ${BUILD_MOZC_LIST:Mmozc_el} == "mozc_el"
-
-PORTREVISION=	1
 
 CONFLICTS_INSTALL=	ja-mozc-el-*
 
