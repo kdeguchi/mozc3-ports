@@ -13,7 +13,6 @@ PATCHDIR_UTDIC=	${.CURDIR}/files
 BUILD_MOZC_LIST?=	mozc_server_ut
 
 .if ${BUILD_MOZC_LIST:Mmozc_server_ut} == "mozc_server_ut" || make(makesum)
-
 PKGNAMEPREFIX=	ja-
 PKGNAMESUFFIX=	3-server
 
@@ -146,8 +145,11 @@ post-extract-mozc_server_ut:
 
 post-extract: post-extract-mozc_server_ut
 
-post-patch-mozc_server_ut:
-	@${ECHO_MSG} "===> Creating mozcdic-ut.txt for UT Dictionary. It takes a long time!"
+. endif
+
+do-build-mozc_server_ut:
+.if ${_UTDIC} == 1
+	@${ECHO_MSG} "===>    Creating mozcdic-ut.txt for UT Dictionary. It takes a long time!"
 	cd ${WRKSRC_ut}/src/merge && \
 		${CP} ${BUILD_WRKSRC}/merge_dictionaries.py . && \
 		${REINPLACE_CMD} -e 's@%%WRKSRC%%@${WRKSRC}@' merge_dictionaries.py && \
@@ -157,12 +159,7 @@ post-patch-mozc_server_ut:
 		${PYTHON_CMD} merge_dictionaries.py mozcdic-ut.txt && \
 		${CAT} mozcdic-ut.txt \
 			>> ${BUILD_WRKSRC}/data/dictionary_oss/dictionary00.txt
-
-post-patch: post-patch-mozc_server_ut
-
-. endif # _UDIC
-
-do-build-mozc_server_ut:
+.endif
 	${BUILD_MOZC_CMD} \
 		//server:mozc_server \
 		//unix/emacs:mozc_emacs_helper \
