@@ -1,11 +1,12 @@
 PKGNAMEPREFIX=	ja-uim-
+PKGNAMESUFFIX=	3
 
 COMMENT=	Mozc engine for uim
 
 MASTERDIR=	${.CURDIR}/../../japanese/mozc3-server
-FILESDIR=	${.CURDIR}/files
 DATADIR=	${PREFIX}/share/uim
-SUB_FILES=	pkg-message
+SUB_FILES=	pkg-message-uim
+PKGMESSAGE=	${WRKDIR}/pkg-message-uim
 
 BUILD_MOZC_LIST=uim_mozc
 

@@ -1,5 +1,5 @@
---- merge_dictionaries.py.orig	2026-04-08 01:20:27.000000000 +0900
-+++ merge_dictionaries.py	2026-04-13 09:21:07.954381000 +0900
+--- src/merge_dictionaries.py.orig	2026-04-08 01:20:27.000000000 +0900
++++ src/merge_dictionaries.py	2026-04-13 09:21:07.954381000 +0900
 @@ -11,12 +11,11 @@
  import json
  import re

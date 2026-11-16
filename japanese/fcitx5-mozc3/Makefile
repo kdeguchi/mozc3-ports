@@ -1,4 +1,5 @@
 PKGNAMEPREFIX=	ja-fcitx5-
+PKGNAMESUFFIX=	3
 
 COMMENT=	Mozc engine for Fcitx5
 

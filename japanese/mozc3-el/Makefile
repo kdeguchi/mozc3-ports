@@ -1,4 +1,4 @@
-PKGNAMESUFFIX=	-el
+PKGNAMESUFFIX=	3-el
 
 COMMENT=	Emacs input method for Mozc
 
