@@ -5,8 +5,9 @@ CONFLICTS=	ja-fcitx5-mozc-* \
 		ja-mozc-tool-* \
 		ja-uim-mozc-*
 
-DISTINFO_FILE=	${.CURDIR}/distinfo
+MASTERDIR=	${PORTSDIR}/japanese/mozc-server
 
+DISTINFO_FILE=	${.CURDIR}/distinfo
 PATCHDIR_UTDIC=	${.CURDIR}/files
 
 BUILD_MOZC_LIST?=	mozc_server_ut
@@ -73,7 +74,6 @@ SUB_FILES+=	mozc
 
 .endif
 
-MASTERDIR=	${.CURDIR}/../mozc-server
 .include "${MASTERDIR}/Makefile"
 
 .if ${BUILD_MOZC_LIST:Mmozc_server_ut} == "mozc_server_ut"
