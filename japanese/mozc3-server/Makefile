@@ -38,16 +38,16 @@ UTDIC_DESC=		Additional UT Dictionaries
 
 ALTCANNADIC_GH_TUPLE=	utuhiro78:mozcdic-ut-alt-cannadic:0e23741:altcannadic
 EDICT2_GH_TUPLE=	utuhiro78:mozcdic-ut-edict2:8fe8f79:edict2
-JAWIKI_GH_TUPLE=	utuhiro78:mozcdic-ut-jawiki:57af6ad:jawiki
+JAWIKI_GH_TUPLE=	utuhiro78:mozcdic-ut-jawiki:cd3c637:jawiki
 NEOLOGD_GH_TUPLE=	utuhiro78:mozcdic-ut-neologd:e33ac4c:neologd
-PERSONALNAME_GH_TUPLE=	utuhiro78:mozcdic-ut-personal-names:b557dd4:personal
-PLACENAME_GH_TUPLE=	utuhiro78:mozcdic-ut-place-names:98cf8e9:place
+PERSONALNAME_GH_TUPLE=	utuhiro78:mozcdic-ut-personal-names:3da38e0:personal
+PLACENAME_GH_TUPLE=	utuhiro78:mozcdic-ut-place-names:7e2b442:place
 SKKJISYO_GH_TUPLE=	utuhiro78:mozcdic-ut-skk-jisyo:384ad92:skkjisyo
 SUDACHIDICT_GH_TUPLE=	utuhiro78:mozcdic-ut-sudachidict:13129dd:sudachi
 
 UTDIC_GH_TUPLE=		utuhiro78:merge-ut-dictionaries:6239884:ut
-UTDIC_MASTER_SITES=	http://download.wikimedia.org/jawiki/20261001/:jawiki_index
-UTDIC_DISTFILES=	jawiki-20261001-pages-articles-multistream-index.txt.bz2:jawiki_index
+UTDIC_MASTER_SITES=	http://download.wikimedia.org/jawiki/20261101/:jawiki_index
+UTDIC_DISTFILES=	jawiki-20261101-pages-articles-multistream-index.txt.bz2:jawiki_index
 UTDIC_EXTRA_PATCHES=	${PATCHDIR_UTDIC}/extra-patch-merge_dictionaries.py
 
 ALTCANNADIC_EXTRACT_ONLY=	${DISTFILE_altcannadic}
@@ -76,6 +76,7 @@ SUB_FILES+=	mozc
 .include "${MASTERDIR}/Makefile"
 
 .if ${BUILD_MOZC_LIST:Mmozc_server_ut} == "mozc_server_ut"
+PORTREVISION=	2
 
 PLIST_FILES+=	bin/mozc \
 		bin/mozc_emacs_helper \
