@@ -32,7 +32,7 @@ JAWIKI_DESC=		Dictionary from Japanese Wikipedia
 NEOLOGD_DESC=		Dictionary from NEologd
 PERSONALNAME_DESC=	Personal Name Dictionary
 PLACENAME_DESC=		Place Name Dictionary
-SKKJISYO_DESC=		Dictionary from from SKK-JISYO
+SKKJISYO_DESC=		Dictionary from SKK-JISYO
 SUDACHIDICT_DESC=	Dictionary from SudachiDict
 UTDIC_DESC=		Additional UT Dictionaries
 
